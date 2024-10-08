@@ -1,6 +1,8 @@
 package io.github.dracosomething.mtfatedunion.registry.entity;
 
 import io.github.dracosomething.mtfatedunion.registry.ModItems;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -12,6 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -19,10 +22,26 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net. minecraft. world. level. Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import stepsword.mahoutsukai.advancements.ModTriggers;
+import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
+import stepsword.mahoutsukai.config.MTConfig;
+import stepsword.mahoutsukai.entity.mahoujin.MysticStaffMahoujinEntity;
+import stepsword.mahoutsukai.item.spells.mystic.MysticStaff.Bakuretsu;
+import stepsword.mahoutsukai.item.spells.mystic.MysticStaff.MysticStaff;
+import stepsword.mahoutsukai.networking.BakuretsuPacket;
+import stepsword.mahoutsukai.networking.PacketHandler;
+import stepsword.mahoutsukai.util.Utils;
+import stepsword.mahoutsukai.effects.projection.PowerConsolidationSpellEffect;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class ThrowGaeBolg extends AbstractArrow {
@@ -51,8 +70,7 @@ public class ThrowGaeBolg extends AbstractArrow {
         }
 
         Entity entity = this.getOwner();
-        int i = (Byte)this.entityData.get(ID_LOYALTY);
-        if (i > 0 && (this.dealtDamage || this.isNoPhysics()) && entity != null) {
+        if ((this.dealtDamage || this.isNoPhysics()) && entity != null) {
             if (!this.isAcceptibleReturnOwner()) {
                 if (!this.level().isClientSide && this.pickup == Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
@@ -62,12 +80,12 @@ public class ThrowGaeBolg extends AbstractArrow {
             } else {
                 this.setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(this.position());
-                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)i, this.getZ());
+                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)2, this.getZ());
                 if (this.level().isClientSide) {
                     this.yOld = this.getY();
                 }
 
-                double d0 = 0.05 * (double)i;
+                double d0 = 0.05 * (double)3;
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.95).add(vec3.normalize().scale(d0)));
                 if (this.Gae_bolgreturn == 0) {
                     this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
@@ -83,7 +101,7 @@ public class ThrowGaeBolg extends AbstractArrow {
     private boolean isAcceptibleReturnOwner() {
         Entity entity = this.getOwner();
         if (entity != null && entity.isAlive()) {
-            return !(entity instanceof ServerPlayer) || !entity.isSpectator();
+            return !(entity instanceof LocalPlayer) || !entity.isSpectator();
         } else {
             return false;
         }
@@ -99,6 +117,10 @@ public class ThrowGaeBolg extends AbstractArrow {
     }
 
     protected void onHitEntity(EntityHitResult p_37573_) {
+        for (int i = 0; i < 1; i++) {
+            super.onHitEntity(p_37573_);
+            execute(this.level(), p_37573_.getEntity().getX(), p_37573_.getEntity().getY(), p_37573_.getEntity().getZ());
+        }
         Entity entity = p_37573_.getEntity();
         float f = 14.0F;
         if (entity instanceof LivingEntity livingentity) {
@@ -132,6 +154,21 @@ public class ThrowGaeBolg extends AbstractArrow {
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(soundevent, 1.0F, 1.0F);
+    }
+
+    @Override
+    public void onHitBlock(BlockHitResult blockHitResult) {
+        for (int i = 0; i <= 1; i++) {
+        super.onHitBlock(blockHitResult);
+            execute(this.level(), blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ());
+        }
+    }
+
+    public void execute(LevelAccessor world, double x, double y, double z) {
+        if (world instanceof Level _level && !_level.isClientSide()) {
+            _level.explode(null, x, y, z, 7, Level.ExplosionInteraction.TNT);
+        }
+
     }
 
     protected boolean tryPickup(Player player) {

@@ -30,7 +30,7 @@ public class ModItems {
 
     static {
         ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, mtfatedunion.MODID);
-        GAE_BOLG = ITEMS.register("gae_bolg", () ->{return new gae_bolg(Tiers.NETHERITE, 15, 2f, (new Item.Properties())
+        GAE_BOLG = ITEMS.register("gae_bolg", () ->{return new gae_bolg(mtfatedunionTiers.GAE_BOLG, 15, 2f, (new Item.Properties())
                 .stacksTo(1)
                 .durability(5000)
                 .fireResistant()
