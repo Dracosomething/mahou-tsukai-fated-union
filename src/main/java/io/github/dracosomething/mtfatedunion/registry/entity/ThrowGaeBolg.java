@@ -80,7 +80,7 @@ public class ThrowGaeBolg extends AbstractArrow {
             } else {
                 this.setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(this.position());
-                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)2, this.getZ());
+                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)3, this.getZ());
                 if (this.level().isClientSide) {
                     this.yOld = this.getY();
                 }
@@ -168,7 +168,6 @@ public class ThrowGaeBolg extends AbstractArrow {
         if (world instanceof Level _level && !_level.isClientSide()) {
             _level.explode(null, x, y, z, 7, Level.ExplosionInteraction.TNT);
         }
-
     }
 
     protected boolean tryPickup(Player player) {

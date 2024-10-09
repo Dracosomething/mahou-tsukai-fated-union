@@ -57,39 +57,40 @@ public class gae_bolg extends SwordItem implements Vanishable {
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int p_43397_) {
         if (entity instanceof Player player) {
             if (!player.level().isClientSide){
-            final int manacost = 5000;
-            if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
-            int i = this.getUseDuration(stack) - p_43397_;
-                    if (i >= 10) {
-                        int j = EnchantmentHelper.getRiptide(stack);
-                        if (j <= 0 || player.isInWaterOrRain()) {
-                            if (!level.isClientSide) {
-                                stack.hurtAndBreak(1, player, (p_43388_) -> {
-                                    p_43388_.broadcastBreakEvent(entity.getUsedItemHand());
-                                });
-                                if (j == 0) {
-                                    ThrowGaeBolg gae_bolg = new ThrowGaeBolg(ModEntities.THROW_GEA_BOLG.get(), level, player, stack);
-                                    gae_bolg.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
-                                    if (player.getAbilities().instabuild) {
-                                        gae_bolg.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-                                    }
+                final int manacost = 5000;
+                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
+                    int i = this.getUseDuration(stack) - p_43397_;
+                        if (i >= 10) {
+                            int j = EnchantmentHelper.getRiptide(stack);
+                            if (j <= 0 || player.isInWaterOrRain()) {
+                                if (!level.isClientSide) {
+                                    stack.hurtAndBreak(1, player, (p_43388_) -> {
+                                        p_43388_.broadcastBreakEvent(entity.getUsedItemHand());
+                                    });
+                                    if (j == 0) {
+                                        ThrowGaeBolg gae_bolg = new ThrowGaeBolg(ModEntities.THROW_GEA_BOLG.get(), level, player, stack);
+                                        gae_bolg.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
+                                        if (player.getAbilities().instabuild) {
+                                            gae_bolg.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                                        }
 
-                                    level.addFreshEntity(gae_bolg);
-                                    if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) > 0) {
-                                        gae_bolg.setSecondsOnFire(100);
-                                    }
+                                        level.addFreshEntity(gae_bolg);
+                                        if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) > 0) {
+                                            gae_bolg.setSecondsOnFire(100);
+                                        }
 
-                                    level.playSound((Player) null, gae_bolg, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
-                                    if (!player.getAbilities().instabuild) {
-                                        player.getInventory().removeItem(stack);
+                                        level.playSound((Player) null, gae_bolg, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                        if (!player.getAbilities().instabuild) {
+                                            player.getInventory().removeItem(stack);
+                                        }
                                     }
                                 }
-                            }
                             player.awardStat(Stats.ITEM_USED.get(this));
                         }
                     }
+                }
+            }
         }
-        }}
     }
 
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
