@@ -3,7 +3,8 @@ package io.github.dracosomething.mtfatedunion.registry.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
-import net.minecraft.server.level.ServerPlayer;
+import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
+import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolgMorgan;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -22,17 +23,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
 import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
-import stepsword.mahoutsukai.config.MTConfig;
-import stepsword.mahoutsukai.util.PlayerHelp;
-import stepsword.mahoutsukai.util.Utils;
 
-public class gae_bolg extends SwordItem implements Vanishable {
-    EntityType<? extends ThrowGaeBolg> type;
+public class gae_bolg_morgan extends SwordItem implements Vanishable {
+    EntityType<? extends ThrowGaeBolgMorgan> type;
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-        public gae_bolg(Tier tier, int p_43270_, float p_43271_, Item.Properties properties) {
+        public gae_bolg_morgan(Tier tier, int p_43270_, float p_43271_, Properties properties) {
         super(tier, p_43270_, p_43271_, properties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 14.0, AttributeModifier.Operation.ADDITION));
@@ -45,7 +42,7 @@ public class gae_bolg extends SwordItem implements Vanishable {
     }
 
     public int getUseDuration(ItemStack p_43419_) {
-        return 720000;
+        return 72000;
     }
 
     public InteractionResultHolder<ItemStack> use(Level p_43405_, Player p_43406_, InteractionHand p_43407_) {
@@ -68,18 +65,18 @@ public class gae_bolg extends SwordItem implements Vanishable {
                                         p_43388_.broadcastBreakEvent(entity.getUsedItemHand());
                                     });
                                     if (j == 0) {
-                                        ThrowGaeBolg gae_bolg = new ThrowGaeBolg(ModEntities.THROW_GEA_BOLG.get(), level, player, stack);
-                                        gae_bolg.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
+                                        ThrowGaeBolgMorgan gae_bolg_morgan = new ThrowGaeBolgMorgan(ModEntities.THROW_GEA_MORGAN.get(), level, player, stack);
+                                        gae_bolg_morgan.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
                                         if (player.getAbilities().instabuild) {
-                                            gae_bolg.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                                            gae_bolg_morgan.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                                         }
 
-                                        level.addFreshEntity(gae_bolg);
+                                        level.addFreshEntity(gae_bolg_morgan);
                                         if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) > 0) {
-                                            gae_bolg.setSecondsOnFire(100);
+                                            gae_bolg_morgan.setSecondsOnFire(100);
                                         }
 
-                                        level.playSound((Player) null, gae_bolg, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                        level.playSound((Player) null, gae_bolg_morgan, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
                                         if (!player.getAbilities().instabuild) {
                                             player.getInventory().removeItem(stack);
                                         }

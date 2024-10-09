@@ -7,16 +7,18 @@ import io.github.dracosomething.mtfatedunion.client.model.ThrownGaeBolgModel;
 import io.github.dracosomething.mtfatedunion.mtfatedunion;
 import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class GaeBolgThrownEntityRenderer extends EntityRenderer<ThrowGaeBolg> {
-    public static final ResourceLocation SPEAR_LOCATION = new ResourceLocation(mtfatedunion.MODID, "textures/entity/gae_bolg.png");
+public class GaeMorganThrownEntityRenderer extends EntityRenderer<ThrowGaeBolg> {
+    public static final ResourceLocation SPEAR_LOCATION = new ResourceLocation(mtfatedunion.MODID, "textures/entity/gae_bolg_morgan.png");
     private final ThrownGaeBolgModel model;
 
-    public GaeBolgThrownEntityRenderer(EntityRendererProvider.Context context) {
+    public GaeMorganThrownEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.model = new ThrownGaeBolgModel(context.bakeLayer(ThrownGaeBolgModel.LAYER_LOCATION));
     }

@@ -2,61 +2,53 @@ package io.github.dracosomething.mtfatedunion.registry.entity;
 
 import io.github.dracosomething.mtfatedunion.registry.ModItems;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net. minecraft. world. level. Level;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
-import stepsword.mahoutsukai.advancements.ModTriggers;
-import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
-import stepsword.mahoutsukai.config.MTConfig;
-import stepsword.mahoutsukai.entity.mahoujin.MysticStaffMahoujinEntity;
-import stepsword.mahoutsukai.item.spells.mystic.MysticStaff.Bakuretsu;
-import stepsword.mahoutsukai.item.spells.mystic.MysticStaff.MysticStaff;
-import stepsword.mahoutsukai.networking.BakuretsuPacket;
-import stepsword.mahoutsukai.networking.PacketHandler;
-import stepsword.mahoutsukai.util.Utils;
-import stepsword.mahoutsukai.effects.projection.PowerConsolidationSpellEffect;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
+
+import static stepsword.mahoutsukai.item.spells.mystic.MysticStaff.Bakuretsu.getBlockDensity;
 
 
-public class ThrowGaeBolg extends AbstractArrow {
+public class ThrowGaeBolgMorgan extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY;
     private static final EntityDataAccessor<Boolean> ID_FOIL;
     private ItemStack GAE_BOLG;
     private boolean dealtDamage;
     public int Gae_bolgreturn;
+    private int radius;
+    private float posX;
+    private float posY;
+    private float posZ;
+    public HashMap<Player, Vec3> knockback;
+    private float damage;
+    protected Player lastHurtByPlayer;
 
-    public ThrowGaeBolg(EntityType<? extends AbstractArrow> type, Level level) {
+    public ThrowGaeBolgMorgan(EntityType<? extends AbstractArrow> type, Level level) {
         super(type, level);
-        this.GAE_BOLG = new ItemStack((ItemLike) ModItems.GAE_BOLG.get());
+        this.GAE_BOLG = new ItemStack((ItemLike) ModItems.GAE_BOLG_MORGAN.get());
     }
 
-    public ThrowGaeBolg(EntityType<? extends AbstractArrow> type, Level world, LivingEntity entity, ItemStack stack) {
+    public ThrowGaeBolgMorgan(EntityType<? extends AbstractArrow> type, Level world, LivingEntity entity, ItemStack stack) {
         super(type, entity, world);
         this.GAE_BOLG = new ItemStack((ItemLike) ModItems.GAE_BOLG.get());
         this.GAE_BOLG = stack.copy();
@@ -119,7 +111,7 @@ public class ThrowGaeBolg extends AbstractArrow {
     protected void onHitEntity(EntityHitResult p_37573_) {
         for (int i = 0; i < 1; i++) {
             super.onHitEntity(p_37573_);
-            execute(this.level(), p_37573_.getEntity().getX(), p_37573_.getEntity().getY(), p_37573_.getEntity().getZ());
+
         }
         Entity entity = p_37573_.getEntity();
         float f = 14.0F;
@@ -156,18 +148,45 @@ public class ThrowGaeBolg extends AbstractArrow {
         this.playSound(soundevent, 1.0F, 1.0F);
     }
 
-    @Override
-    public void onHitBlock(BlockHitResult blockHitResult) {
-        for (int i = 0; i <= 1; i++) {
-        super.onHitBlock(blockHitResult);
-            execute(this.level(), blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ());
-        }
-    }
+//    @Override
+//    public void onHitBlock(BlockHitResult blockHitResult) {
+//        for (int i = 0; i <= 1; i++) {
+//        super.onHitBlock(blockHitResult);
+//            hurt();
+//        }
+//    }
 
-    public void execute(LevelAccessor world, double x, double y, double z) {
-        if (world instanceof Level _level && !_level.isClientSide()) {
-            _level.explode(null, x, y, z, 7, Level.ExplosionInteraction.TNT);
+    public void hurt(Entity entity, Vec3 boom, Player player) {
+        double x = entity.getX();
+        double y = entity.getY();
+        double z = entity.getZ();
+        double cmp = (double)(this.radius * this.radius) - ((double)this.posX - x) * ((double)this.posX - x) - ((double)this.posY - y) * ((double)this.posY - y) - ((double)this.posZ - z) * ((double)this.posZ - z);
+        float density = getBlockDensity(boom, entity);
+        if (entity instanceof LivingEntity) {
+            float currenthealth = ((LivingEntity) entity).getHealth();
+            float Half = currenthealth / 2;
+            float damage = currenthealth - 10;
+            ((LivingEntity)entity).setLastHurtByPlayer(player);
+            if (currenthealth > 40) {
+                ((LivingEntity) entity).setHealth(Half);
+            }
+            else {
+                ((LivingEntity) entity).setHealth(damage);
+            }
         }
+
+        Vec3 kb = (new Vec3(x, y, z)).add(new Vec3((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ))).normalize().scale(Math.sqrt(cmp) / 4.0);
+        double motionX = entity.getDeltaMovement().x;
+        double motionY = entity.getDeltaMovement().y;
+        double motionZ = entity.getDeltaMovement().z;
+        motionX += kb.x;
+        motionY += kb.y;
+        motionZ += kb.z;
+        entity.setDeltaMovement(motionX, motionY, motionZ);
+        if (entity instanceof Player) {
+            this.knockback.put((Player)entity, kb);
+        }
+
     }
 
     protected boolean tryPickup(Player player) {
@@ -227,8 +246,8 @@ public class ThrowGaeBolg extends AbstractArrow {
     }
 
     static {
-        ID_LOYALTY = SynchedEntityData.defineId(ThrowGaeBolg.class, EntityDataSerializers.BYTE);
-        ID_FOIL = SynchedEntityData.defineId(ThrowGaeBolg.class, EntityDataSerializers.BOOLEAN);
+        ID_LOYALTY = SynchedEntityData.defineId(ThrowGaeBolgMorgan.class, EntityDataSerializers.BYTE);
+        ID_FOIL = SynchedEntityData.defineId(ThrowGaeBolgMorgan.class, EntityDataSerializers.BOOLEAN);
     }
 
 }

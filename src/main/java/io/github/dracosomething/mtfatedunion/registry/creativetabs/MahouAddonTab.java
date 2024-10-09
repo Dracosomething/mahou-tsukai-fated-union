@@ -23,6 +23,7 @@ public class MahouAddonTab {
             // Add default items to tab
             .displayItems((params, output) -> {
                 output.accept(ModItems.GAE_BOLG.get());
+                output.accept(ModItems.GAE_BOLG_MORGAN.get());
             })
             .build()
     );

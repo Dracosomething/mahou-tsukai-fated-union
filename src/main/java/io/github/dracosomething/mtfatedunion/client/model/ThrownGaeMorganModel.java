@@ -14,11 +14,11 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 
-public class ThrownGaeBolgModel extends EntityModel<ThrowGaeBolg> {
+public class ThrownGaeMorganModel extends EntityModel<ThrowGaeBolg> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(mtfatedunion.MODID , "throwngaebolg"), "main");
 	private final ModelPart bb_main;
 
-	public ThrownGaeBolgModel(ModelPart root) {
+	public ThrownGaeMorganModel(ModelPart root) {
 		this.bb_main = root.getChild("bb_main");
 	}
 

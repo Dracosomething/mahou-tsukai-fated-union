@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "mtfatedunion:item/gae_bolg"
+    "layer0": "mtfatedunion:item/gae_bolg_morgan"
   },
   "display": {
     "thirdperson_righthand": {

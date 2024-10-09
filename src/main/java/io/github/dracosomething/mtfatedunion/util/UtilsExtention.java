@@ -1,10 +1,5 @@
-package io.github.dracosomething.mtfatedunion.ùtil;
+package io.github.dracosomething.mtfatedunion.util;
 
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.LazyOptional;
-import stepsword.mahoutsukai.capability.caliburn.CaliburnMahouProvider;
-import stepsword.mahoutsukai.capability.caliburn.ICaliburnMahou;
 import stepsword.mahoutsukai.util.Utils;
 
 public class UtilsExtention extends Utils {
