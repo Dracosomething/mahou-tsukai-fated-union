@@ -56,9 +56,9 @@ public class gae_bolg extends SwordItem implements Vanishable {
 
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int p_43397_) {
         if (entity instanceof Player player) {
-            if (!player.level().isClientSide){
-                final int manacost = 5000;
-                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
+//            if (!player.level().isClientSide){
+//                final int manacost = 5000;
+//                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
                     int i = this.getUseDuration(stack) - p_43397_;
                         if (i >= 10) {
                             int j = EnchantmentHelper.getRiptide(stack);
@@ -90,8 +90,8 @@ public class gae_bolg extends SwordItem implements Vanishable {
                     }
                 }
             }
-        }
-    }
+//        }
+//    }
 
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return enchantment == Enchantments.LOYALTY || super.canApplyAtEnchantingTable(stack, enchantment);

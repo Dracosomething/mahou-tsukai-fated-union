@@ -3,8 +3,7 @@ package io.github.dracosomething.mtfatedunion.registry.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
-import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
-import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolgMorgan;
+import io.github.dracosomething.mtfatedunion.registry.entity.morgan.ThrowGaeBolgMorgan;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -23,7 +22,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
 
 public class gae_bolg_morgan extends SwordItem implements Vanishable {
     EntityType<? extends ThrowGaeBolgMorgan> type;
@@ -53,38 +51,33 @@ public class gae_bolg_morgan extends SwordItem implements Vanishable {
 
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int p_43397_) {
         if (entity instanceof Player player) {
-            if (!player.level().isClientSide){
-                final int manacost = 5000;
-                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
-                    int i = this.getUseDuration(stack) - p_43397_;
-                        if (i >= 10) {
-                            int j = EnchantmentHelper.getRiptide(stack);
-                            if (j <= 0 || player.isInWaterOrRain()) {
-                                if (!level.isClientSide) {
-                                    stack.hurtAndBreak(1, player, (p_43388_) -> {
-                                        p_43388_.broadcastBreakEvent(entity.getUsedItemHand());
-                                    });
-                                    if (j == 0) {
-                                        ThrowGaeBolgMorgan gae_bolg_morgan = new ThrowGaeBolgMorgan(ModEntities.THROW_GEA_MORGAN.get(), level, player, stack);
-                                        gae_bolg_morgan.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
-                                        if (player.getAbilities().instabuild) {
-                                            gae_bolg_morgan.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-                                        }
+            int i = this.getUseDuration(stack) - p_43397_;
+            if (i >= 10) {
+                int j = EnchantmentHelper.getRiptide(stack);
+                if (j <= 0 || player.isInWaterOrRain()) {
+                    if (!level.isClientSide) {
+                        stack.hurtAndBreak(1, player, (p_43388_) -> {
+                            p_43388_.broadcastBreakEvent(entity.getUsedItemHand());
+                        });
+                        if (j == 0) {
+                            ThrowGaeBolgMorgan gae_bolg_morgan = new ThrowGaeBolgMorgan(ModEntities.THROW_GEA_MORGAN.get(), level, player, stack);
+                            gae_bolg_morgan.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
+                            if (player.getAbilities().instabuild) {
+                                gae_bolg_morgan.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                            }
 
-                                        level.addFreshEntity(gae_bolg_morgan);
-                                        if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) > 0) {
-                                            gae_bolg_morgan.setSecondsOnFire(100);
-                                        }
+                            level.addFreshEntity(gae_bolg_morgan);
+                            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) > 0) {
+                                gae_bolg_morgan.setSecondsOnFire(100);
+                            }
 
-                                        level.playSound((Player) null, gae_bolg_morgan, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
-                                        if (!player.getAbilities().instabuild) {
-                                            player.getInventory().removeItem(stack);
-                                        }
-                                    }
-                                }
-                            player.awardStat(Stats.ITEM_USED.get(this));
+                            level.playSound((Player) null, gae_bolg_morgan, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            if (!player.getAbilities().instabuild) {
+                                player.getInventory().removeItem(stack);
+                            }
                         }
                     }
+                    player.awardStat(Stats.ITEM_USED.get(this));
                 }
             }
         }

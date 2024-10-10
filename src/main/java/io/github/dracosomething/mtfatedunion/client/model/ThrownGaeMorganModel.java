@@ -6,7 +6,7 @@ package io.github.dracosomething.mtfatedunion.client.model;// Made with Blockben
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.dracosomething.mtfatedunion.mtfatedunion;
-import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
+import io.github.dracosomething.mtfatedunion.registry.entity.morgan.ThrowGaeBolgMorgan;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,8 +14,8 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 
-public class ThrownGaeMorganModel extends EntityModel<ThrowGaeBolg> {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(mtfatedunion.MODID , "throwngaebolg"), "main");
+public class ThrownGaeMorganModel extends EntityModel<ThrowGaeBolgMorgan> {
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(mtfatedunion.MODID , "throwngaemorgan"), "main");
 	private final ModelPart bb_main;
 
 	public ThrownGaeMorganModel(ModelPart root) {
@@ -37,7 +37,6 @@ public class ThrownGaeMorganModel extends EntityModel<ThrowGaeBolg> {
 	}
 
 	@Override
-	public void setupAnim(ThrowGaeBolg p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_) {
-
+	public void setupAnim(ThrowGaeBolgMorgan p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_){
 	}
 }

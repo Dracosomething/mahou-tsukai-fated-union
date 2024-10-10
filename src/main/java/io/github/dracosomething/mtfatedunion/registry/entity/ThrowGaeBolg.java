@@ -45,7 +45,6 @@ import java.util.Iterator;
 
 
 public class ThrowGaeBolg extends AbstractArrow {
-    private static final EntityDataAccessor<Byte> ID_LOYALTY;
     private static final EntityDataAccessor<Boolean> ID_FOIL;
     private ItemStack GAE_BOLG;
     private boolean dealtDamage;
@@ -60,7 +59,6 @@ public class ThrowGaeBolg extends AbstractArrow {
         super(type, entity, world);
         this.GAE_BOLG = new ItemStack((ItemLike) ModItems.GAE_BOLG.get());
         this.GAE_BOLG = stack.copy();
-        this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
         this.entityData.set(ID_FOIL, stack.hasFoil());
     }
 
@@ -70,7 +68,8 @@ public class ThrowGaeBolg extends AbstractArrow {
         }
 
         Entity entity = this.getOwner();
-        if ((this.dealtDamage || this.isNoPhysics()) && entity != null) {
+        int i = 3;
+        if (i > 0 && (this.dealtDamage || this.isNoPhysics()) && entity != null) {
             if (!this.isAcceptibleReturnOwner()) {
                 if (!this.level().isClientSide && this.pickup == Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
@@ -80,12 +79,12 @@ public class ThrowGaeBolg extends AbstractArrow {
             } else {
                 this.setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(this.position());
-                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)3, this.getZ());
+                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)i, this.getZ());
                 if (this.level().isClientSide) {
                     this.yOld = this.getY();
                 }
 
-                double d0 = 0.05 * (double)3;
+                double d0 = 0.05 * (double)i;
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.95).add(vec3.normalize().scale(d0)));
                 if (this.Gae_bolgreturn == 0) {
                     this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
@@ -165,8 +164,16 @@ public class ThrowGaeBolg extends AbstractArrow {
     }
 
     public void execute(LevelAccessor world, double x, double y, double z) {
-        if (world instanceof Level _level && !_level.isClientSide()) {
-            _level.explode(null, x, y, z, 7, Level.ExplosionInteraction.TNT);
+        Entity entity = this.getOwner();
+        if (entity instanceof Player player){
+            final int manacost = 5000;
+            if (!player.level().isClientSide){
+                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
+                    if (world instanceof Level _level && !_level.isClientSide()) {
+                        _level.explode(null, x, y, z, 7, Level.ExplosionInteraction.TNT);
+                    }
+                }
+            }
         }
     }
 
@@ -176,7 +183,6 @@ public class ThrowGaeBolg extends AbstractArrow {
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ID_LOYALTY, (byte)0);
         this.entityData.define(ID_FOIL, false);
     }
 
@@ -202,7 +208,6 @@ public class ThrowGaeBolg extends AbstractArrow {
         }
 
         this.dealtDamage = p_37578_.getBoolean("DealtDamage");
-        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.GAE_BOLG));
     }
 
     public void addAdditionalSaveData(CompoundTag p_37582_) {
@@ -227,7 +232,6 @@ public class ThrowGaeBolg extends AbstractArrow {
     }
 
     static {
-        ID_LOYALTY = SynchedEntityData.defineId(ThrowGaeBolg.class, EntityDataSerializers.BYTE);
         ID_FOIL = SynchedEntityData.defineId(ThrowGaeBolg.class, EntityDataSerializers.BOOLEAN);
     }
 
