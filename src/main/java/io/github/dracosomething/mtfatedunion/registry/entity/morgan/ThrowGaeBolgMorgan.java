@@ -19,20 +19,29 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
+import stepsword.mahoutsukai.entity.mahoujin.MysticStaffMahoujinEntity;
+import stepsword.mahoutsukai.item.spells.mystic.MysticStaff.Bakuretsu;
+import stepsword.mahoutsukai.item.spells.mystic.MysticStaff.MysticStaff;
+import stepsword.mahoutsukai.util.Utils;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
-import static stepsword.mahoutsukai.item.spells.mystic.MysticStaff.Bakuretsu.getBlockDensity;
+import static stepsword.mahoutsukai.item.spells.mystic.MysticStaff.MysticStaff.getExplosionDamage;
 
 
 public class ThrowGaeBolgMorgan extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY;
     private static final EntityDataAccessor<Boolean> ID_FOIL;
-    private ItemStack GAE_BOLG;
+    private ItemStack GAE_BOLG_MORGAN;
     private boolean dealtDamage;
     public int Gae_bolgreturn;
     private int radius;
@@ -45,13 +54,13 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
 
     public ThrowGaeBolgMorgan(EntityType<? extends AbstractArrow> type, Level level) {
         super(type, level);
-        this.GAE_BOLG = new ItemStack((ItemLike) ModItems.GAE_BOLG_MORGAN.get());
+        this.GAE_BOLG_MORGAN = new ItemStack((ItemLike) ModItems.GAE_BOLG_MORGAN.get());
     }
 
     public ThrowGaeBolgMorgan(EntityType<? extends AbstractArrow> type, Level world, LivingEntity entity, ItemStack stack) {
         super(type, entity, world);
-        this.GAE_BOLG = new ItemStack((ItemLike) ModItems.GAE_BOLG.get());
-        this.GAE_BOLG = stack.copy();
+        this.GAE_BOLG_MORGAN = new ItemStack((ItemLike) ModItems.GAE_BOLG_MORGAN.get());
+        this.GAE_BOLG_MORGAN = stack.copy();
         this.entityData.set(ID_LOYALTY, (byte) EnchantmentHelper.getLoyalty(stack));
         this.entityData.set(ID_FOIL, stack.hasFoil());
     }
@@ -109,18 +118,18 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
     }
 
     protected void onHitEntity(EntityHitResult p_37573_) {
-        for (int i = 0; i < 1; i++) {
-            super.onHitEntity(p_37573_);
+        super.onHitEntity(p_37573_);
+        execute(this.level(), getX(), getY(), getZ());
 
-        }
+
         Entity entity = p_37573_.getEntity();
         float f = 14.0F;
         if (entity instanceof LivingEntity livingentity) {
-            f += EnchantmentHelper.getDamageBonus(this.GAE_BOLG, livingentity.getMobType());
+            f += EnchantmentHelper.getDamageBonus(this.GAE_BOLG_MORGAN, livingentity.getMobType());
 
         }
 
-        if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, this.GAE_BOLG) > 0) {
+        if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, this.GAE_BOLG_MORGAN) > 0) {
             entity.setSecondsOnFire(5);
         }
 
@@ -148,45 +157,68 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
         this.playSound(soundevent, 1.0F, 1.0F);
     }
 
-//    @Override
-//    public void onHitBlock(BlockHitResult blockHitResult) {
-//        for (int i = 0; i <= 1; i++) {
-//        super.onHitBlock(blockHitResult);
-//            hurt();
-//        }
-//    }
+    @Override
+    public void onHitBlock(BlockHitResult blockHitResult) {
+            super.onHitBlock(blockHitResult);
+            execute(this.level(), blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ());
+    }
 
-    public void hurt(Entity entity, Vec3 boom, Player player) {
-        double x = entity.getX();
-        double y = entity.getY();
-        double z = entity.getZ();
-        double cmp = (double)(this.radius * this.radius) - ((double)this.posX - x) * ((double)this.posX - x) - ((double)this.posY - y) * ((double)this.posY - y) - ((double)this.posZ - z) * ((double)this.posZ - z);
-        float density = getBlockDensity(boom, entity);
+    public void execute(Level world, double x, double y, double z) {
+        MysticStaff.MysticStaffUserStorage storage;
+        Entity entity = this.getOwner();
+        List<Entity> lst = this.affectedrange(world);
+        Iterator var13 = lst.iterator();
+        int radius = 15;
+        if (entity instanceof Player player){
+            new Bakuretsu(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, getExplosionDamage(false, Utils.getPlayerMahou(player)));
+            final int manacost = 5000;
+            if (!player.level().isClientSide){
+                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
+                    while(var13.hasNext()) {
+                        Entity e = (Entity)var13.next();
+                        this.hurt(e, player);
+                    }
+                }
+            }
+        }
+    }
+
+    public void hurt(Entity entity, Player player) {
+        float currenthealth = ((LivingEntity) entity).getHealth();
+        float Half = currenthealth / 2;
+        float damage = currenthealth - 10;
+        if (currenthealth > 40F) {
+            ((LivingEntity) entity).setHealth(Half);
+        }
+        else {
+            ((LivingEntity) entity).setHealth(damage);
+        }
         if (entity instanceof LivingEntity) {
-            float currenthealth = ((LivingEntity) entity).getHealth();
-            float Half = currenthealth / 2;
-            float damage = currenthealth - 10;
             ((LivingEntity)entity).setLastHurtByPlayer(player);
-            if (currenthealth > 40) {
-                ((LivingEntity) entity).setHealth(Half);
-            }
-            else {
-                ((LivingEntity) entity).setHealth(damage);
+        }
+    }
+
+    public List<Entity> affectedrange(Level world) {
+        AABB aabb = new AABB((double)(this.posX - (float)this.radius), (double)(this.posY - (float)this.radius), (double)(this.posZ - (float)this.radius), (double)(this.posX + (float)this.radius), (double)(this.posY + (float)this.radius), (double)(this.posZ + (float)this.radius));
+        List<Entity> entities = world.getEntities((Entity)null, aabb, Entity::isAlive);
+        List<Entity> ret = new ArrayList();
+        new Vec3((double)this.posX, (double)this.posY, (double)this.posZ);
+        Iterator var16 = entities.iterator();
+
+        while(var16.hasNext()) {
+            Entity entity = (Entity)var16.next();
+            if (!entity.ignoreExplosion()) {
+                double x = entity.getX();
+                double y = entity.getY();
+                double z = entity.getZ();
+                double cmp = (double)(this.radius * this.radius) - ((double)this.posX - x) * ((double)this.posX - x) - ((double)this.posY - y) * ((double)this.posY - y) - ((double)this.posZ - z) * ((double)this.posZ - z);
+                if (cmp > 0.0) {
+                    ret.add(entity);
+                }
             }
         }
 
-        Vec3 kb = (new Vec3(x, y, z)).add(new Vec3((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ))).normalize().scale(Math.sqrt(cmp) / 4.0);
-        double motionX = entity.getDeltaMovement().x;
-        double motionY = entity.getDeltaMovement().y;
-        double motionZ = entity.getDeltaMovement().z;
-        motionX += kb.x;
-        motionY += kb.y;
-        motionZ += kb.z;
-        entity.setDeltaMovement(motionX, motionY, motionZ);
-        if (entity instanceof Player) {
-            this.knockback.put((Player)entity, kb);
-        }
-
+        return ret;
     }
 
     protected boolean tryPickup(Player player) {
@@ -200,7 +232,7 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
     }
 
     protected ItemStack getPickupItem() {
-        return this.GAE_BOLG.copy();
+        return this.GAE_BOLG_MORGAN.copy();
     }
 
     protected SoundEvent getDefaultHitGroundSoundEvent() {
@@ -217,16 +249,16 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
     public void readAdditionalSaveData(CompoundTag p_37578_) {
         super.readAdditionalSaveData(p_37578_);
         if (p_37578_.contains("Gáe Bolg", 10)) {
-            this.GAE_BOLG = ItemStack.of(p_37578_.getCompound("Gáe Bolg"));
+            this.GAE_BOLG_MORGAN = ItemStack.of(p_37578_.getCompound("Gáe Bolg"));
         }
 
         this.dealtDamage = p_37578_.getBoolean("DealtDamage");
-        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.GAE_BOLG));
+        this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(this.GAE_BOLG_MORGAN));
     }
 
     public void addAdditionalSaveData(CompoundTag p_37582_) {
         super.addAdditionalSaveData(p_37582_);
-        p_37582_.put("Gáe Bolg", this.GAE_BOLG.save(new CompoundTag()));
+        p_37582_.put("Gáe Bolg", this.GAE_BOLG_MORGAN.save(new CompoundTag()));
         p_37582_.putBoolean("DealtDamage", this.dealtDamage);
     }
 
@@ -234,7 +266,6 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
         if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, p_36746_) > 0) {
             this.setSecondsOnFire(100);
         }
-
     }
 
     protected float getWaterInertia() {
@@ -249,5 +280,4 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
         ID_LOYALTY = SynchedEntityData.defineId(ThrowGaeBolgMorgan.class, EntityDataSerializers.BYTE);
         ID_FOIL = SynchedEntityData.defineId(ThrowGaeBolgMorgan.class, EntityDataSerializers.BOOLEAN);
     }
-
 }
