@@ -14,6 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
 
@@ -132,28 +134,6 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(soundevent, 1.0F, 1.0F);
-    }
-
-    @Override
-    public void onHitBlock(BlockHitResult blockHitResult) {
-        for (int i = 0; i <= 1; i++) {
-            super.onHitBlock(blockHitResult);
-            execute(this.level(), blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ());
-        }
-    }
-
-    public void execute(LevelAccessor world, double x, double y, double z) {
-        Entity entity = this.getOwner();
-        if (entity instanceof Player player){
-            final int manacost = 5000;
-            if (!player.level().isClientSide){
-                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
-                    if (world instanceof Level _level && !_level.isClientSide()) {
-                        _level.explode(null, x, y, z, 7, Level.ExplosionInteraction.TNT);
-                    }
-                }
-            }
-        }
     }
 
     protected boolean tryPickup(Player player) {

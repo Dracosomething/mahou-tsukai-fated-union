@@ -1,6 +1,7 @@
 package io.github.dracosomething.mtfatedunion.registry.entity;
 
 import io.github.dracosomething.mtfatedunion.registry.ModItems;
+import io.github.dracosomething.mtfatedunion.util.Explosion;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -43,12 +44,20 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static io.github.dracosomething.mtfatedunion.util.Explosion.ExplosionDamage;
+import static stepsword.mahoutsukai.item.spells.mystic.MysticStaff.MysticStaff.getExplosionDamage;
+
 
 public class ThrowGaeBolg extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> ID_FOIL;
     private ItemStack GAE_BOLG;
     private boolean dealtDamage;
     public int Gae_bolgreturn;
+
+    @Override
+    public boolean ignoreExplosion() {
+        return super.ignoreExplosion();
+    }
 
     public ThrowGaeBolg(EntityType<? extends AbstractArrow> type, Level level) {
         super(type, level);
@@ -116,10 +125,6 @@ public class ThrowGaeBolg extends AbstractArrow {
     }
 
     protected void onHitEntity(EntityHitResult p_37573_) {
-        for (int i = 0; i < 1; i++) {
-            super.onHitEntity(p_37573_);
-            execute(this.level(), p_37573_.getEntity().getX(), p_37573_.getEntity().getY(), p_37573_.getEntity().getZ());
-        }
         Entity entity = p_37573_.getEntity();
         float f = 14.0F;
         if (entity instanceof LivingEntity livingentity) {
@@ -153,6 +158,12 @@ public class ThrowGaeBolg extends AbstractArrow {
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(soundevent, 1.0F, 1.0F);
+
+        for (int i = 0; i < 21; i++) {
+            if (i == 20){
+                execute(this.level(), p_37573_.getEntity().getX(), p_37573_.getEntity().getY(), p_37573_.getEntity().getZ());
+            }
+        }
     }
 
     @Override
@@ -166,11 +177,14 @@ public class ThrowGaeBolg extends AbstractArrow {
     public void execute(LevelAccessor world, double x, double y, double z) {
         Entity entity = this.getOwner();
         if (entity instanceof Player player){
+            int radius = 15;
             final int manacost = 5000;
             if (!player.level().isClientSide){
                 if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
                     if (world instanceof Level _level && !_level.isClientSide()) {
-                        _level.explode(null, x, y, z, 7, Level.ExplosionInteraction.TNT);
+                        Explosion explosion = new Explosion(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
+                        explosion.explosionA(_level, player);
+                        explosion.explosionB(_level, player);
                     }
                 }
             }

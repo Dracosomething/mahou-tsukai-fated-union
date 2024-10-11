@@ -1,5 +1,6 @@
-package io.github.dracosomething.mtfatedunion.registry;
+package io.github.dracosomething.mtfatedunion.registry.tag;
 
+import io.github.dracosomething.mtfatedunion.registry.TagInit;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeTier;
 
