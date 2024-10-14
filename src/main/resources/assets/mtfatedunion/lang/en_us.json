@@ -1,5 +1,7 @@
 {
   "item.mtfatedunion.gae_bolg": "Gáe Bolg",
   "item.mtfatedunion.gae_bolg_morgan": "Gáe Bolg Morgan",
-  "item_group.mtfatedunion.mtfatedunion": "Mahou Tsukai: Fated Union"
+  "item_group.mtfatedunion.mtfatedunion": "Mahou Tsukai: Fated Union",
+  "entity.mtfatedunion.throwgeabolg": "Gáe Bolg",
+  "entity.mtfatedunion.throwgeamorgan": "Gáe Bolg Morgan"
 }

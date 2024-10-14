@@ -77,7 +77,7 @@ public class Explosion {
                     }
                 }
 
-            FakeExplosion(affected, entity, entity, "bakuretsu", false, lst);
+            FakeExplosion(affected, entity, entity, "bakuretsu", true, lst);
         }
 
         Vec3 boom = new Vec3((double)this.posX, (double)this.posY, (double)this.posZ);
@@ -150,7 +150,9 @@ public class Explosion {
                 for(float z = this.posZ - (float)this.radius; z < this.posZ + (float)this.radius + 1.0F; ++z) {
                     float cmp = (float)(this.radius * this.radius) - (this.posX - x) * (this.posX - x) - (this.posY - y) * (this.posY - y) - (this.posZ - z) * (this.posZ - z);
                     if (cmp > 0.0F && cmp < 6.1F && world instanceof ClientLevel) {
-                        world.addParticle(ParticleTypes.EXPLOSION_EMITTER, true, (double) x, (double) y, (double) z, 5.0, 5.0, 5.0);
+                        world.addParticle(ParticleTypes.SONIC_BOOM, true, (double) x, (double) y, (double) z, 5.0, 5.0, 5.0);
+                        world.addParticle(ParticleTypes.EXPLOSION_EMITTER, true, (double) x, (double) y, (double) z, 5.0, 2.0, 2.0);
+                        world.addParticle(ParticleTypes.SMOKE, true, (double) x, (double) y, (double) z, 5.0, 5.0, 5.0);
                     }
                 }
             }
@@ -228,7 +230,5 @@ public class Explosion {
                 }
             }
         }
-
     }
-
 }
