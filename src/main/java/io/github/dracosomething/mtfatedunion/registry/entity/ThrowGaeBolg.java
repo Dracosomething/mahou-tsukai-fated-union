@@ -3,19 +3,16 @@ package io.github.dracosomething.mtfatedunion.registry.entity;
 import io.github.dracosomething.mtfatedunion.registry.ModItems;
 import io.github.dracosomething.mtfatedunion.util.Explosion;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -27,25 +24,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
-import stepsword.mahoutsukai.advancements.ModTriggers;
 import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
-import stepsword.mahoutsukai.config.MTConfig;
-import stepsword.mahoutsukai.entity.mahoujin.MysticStaffMahoujinEntity;
-import stepsword.mahoutsukai.item.spells.mystic.MysticStaff.Bakuretsu;
-import stepsword.mahoutsukai.item.spells.mystic.MysticStaff.MysticStaff;
-import stepsword.mahoutsukai.networking.BakuretsuPacket;
-import stepsword.mahoutsukai.networking.PacketHandler;
 import stepsword.mahoutsukai.util.Utils;
-import stepsword.mahoutsukai.effects.projection.PowerConsolidationSpellEffect;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import static io.github.dracosomething.mtfatedunion.util.Explosion.ExplosionDamage;
-import static stepsword.mahoutsukai.item.spells.mystic.MysticStaff.MysticStaff.getExplosionDamage;
 
 
 public class ThrowGaeBolg extends AbstractArrow {
@@ -184,9 +168,12 @@ public class ThrowGaeBolg extends AbstractArrow {
                     if (world instanceof Level _level && !_level.isClientSide()) {
                         Explosion explosion = new Explosion(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
                         explosion.explosionA(_level, player);
-                        explosion.explosionB(_level, player);
                     }
                 }
+            }
+            if (world instanceof Level _level && _level.isClientSide()) {
+                Explosion explosion = new Explosion(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
+                explosion.explosionB(_level, player);
             }
         }
     }

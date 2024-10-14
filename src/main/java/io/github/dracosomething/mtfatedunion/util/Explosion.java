@@ -1,6 +1,7 @@
 package io.github.dracosomething.mtfatedunion.util;
 
 import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -60,8 +61,6 @@ public class Explosion {
     }
 
     public void explosionA(Level world, Player entity) {
-        Random rand = Utils.getRandom(world);
-        world.playSound((Player)null, (double)this.posX, (double)this.posY, (double)this.posZ, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F) * 0.7F);
         List<BlockPos> affected = new ArrayList();
         List<Entity> lst = this.playerKnockback(world, entity);
             for(float x = this.posX - (float)this.radius; x < this.posX + (float)this.radius + 1.0F; ++x) {
@@ -71,7 +70,6 @@ public class Explosion {
                         if (cmp > 0.0F) {
                             BlockPos tmp = Utils.toBlockPos(x, y, z);
                             Block b = world.getBlockState(tmp).getBlock();
-                            world.addParticle(ParticleTypes.EXPLOSION_EMITTER, true, (double) x, (double) y, (double) z, 1.0, 0.0, 0.0);
                             if (!unchangableBlock(b, Arrays.asList(Blocks.CAVE_AIR, Blocks.VOID_AIR, Blocks.OBSIDIAN, Blocks.AIR)) && b.getExplosionResistance(world.getBlockState(tmp), world, tmp, (net.minecraft.world.level.Explosion) null) < 4000.0F) {
                                 affected.add(tmp);
                             }
@@ -151,13 +149,12 @@ public class Explosion {
             for(float y = this.posY - (float)this.radius; y < this.posY + (float)this.radius + 1.0F; ++y) {
                 for(float z = this.posZ - (float)this.radius; z < this.posZ + (float)this.radius + 1.0F; ++z) {
                     float cmp = (float)(this.radius * this.radius) - (this.posX - x) * (this.posX - x) - (this.posY - y) * (this.posY - y) - (this.posZ - z) * (this.posZ - z);
-                    if (cmp > 0.0F) {
-                        world.addParticle(ParticleTypes.EXPLOSION_EMITTER, true, (double)x, (double)y, (double)z, 1.0, 0.0, 0.0);
+                    if (cmp > 0.0F && cmp < 6.1F && world instanceof ClientLevel) {
+                        world.addParticle(ParticleTypes.EXPLOSION_EMITTER, true, (double) x, (double) y, (double) z, 5.0, 5.0, 5.0);
                     }
                 }
             }
         }
-
     }
 
     public static float getBlockDensity(Vec3 explosionVector, Entity entity) {
