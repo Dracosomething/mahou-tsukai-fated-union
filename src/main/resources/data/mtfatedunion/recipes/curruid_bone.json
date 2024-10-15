@@ -5,10 +5,19 @@
       "item": "mahoutsukai:caliburn"
     },
     {
-      "item": "minecraft:"
+      "item": "minecraft:dragon_egg"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "minecraft:dragon_breath"
+    },
+    {
+      "item": "minecraft:cod"
     }
   ],
   "result": {
-    "item": "mtfatedunion:gae_bolg"
+    "item": "mtfatedunion:curruid_bone"
   }
 }

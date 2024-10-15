@@ -24,6 +24,8 @@ public class MahouAddonTab {
             .displayItems((params, output) -> {
                 output.accept(ModItems.GAE_BOLG.get());
                 output.accept(ModItems.GAE_BOLG_MORGAN.get());
+                output.accept(ModItems.CURRUID_BONE.get());
+                output.accept(ModItems.CURRUID_ALTER_BONE.get());
             })
             .build()
     );

@@ -2,22 +2,25 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "mahoutsukai:caliburn"
+      "item": "mahoutsukai:morgan"
     },
     {
       "item": "minecraft:dragon_egg"
     },
     {
-      "item": "minecraft:bone"
+      "item": "mtfatedunion:curruid_bone"
     },
     {
       "item": "minecraft:dragon_breath"
     },
     {
       "item": "minecraft:cod"
+    },
+    {
+      "item": "minecraft:poisonous_potato"
     }
   ],
   "result": {
-    "item": "mtfatedunion:curruid_bone"
+    "item": "mtfatedunion:curruid_alter_bone"
   }
 }
