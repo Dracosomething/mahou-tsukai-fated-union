@@ -73,7 +73,7 @@ public class GaeMorganPain {
 
             while(var13.hasNext()) {
                 Entity e = (Entity)var13.next();
-                this.hurt(e, boom, entity);
+                this.hurt(e, boom, entity, caster);
             }
         }
 
@@ -100,7 +100,7 @@ public class GaeMorganPain {
             return ret;
         }
 
-        public void hurt(Entity entity, Vec3 boom, Player player) {
+        public void hurt(Entity entity, Vec3 boom, Player player, Entity caster) {
             double x = entity.getX();
             double y = entity.getY();
             double z = entity.getZ();
@@ -109,7 +109,7 @@ public class GaeMorganPain {
                 if (entity instanceof LivingEntity) {
                     float Health = ((LivingEntity) entity).getHealth();
                     float half = Health / 2F;
-                    float damage = Health - 15F;
+                    float damage = Health - 10F;
                     ((LivingEntity) entity).setLastHurtByPlayer(player);
                     ((LivingEntity) entity).hurtTime = 100;
                     if (Health > 40){
@@ -119,8 +119,10 @@ public class GaeMorganPain {
                         ((LivingEntity) entity).setHealth(damage);
                     }
                 }
+                caster.hurt(player.damageSources(). magic(), 10);
             }
         }
+
 
         public void explosionB(Level world, Player player) {
             Random rand = Utils.getRandom(world);

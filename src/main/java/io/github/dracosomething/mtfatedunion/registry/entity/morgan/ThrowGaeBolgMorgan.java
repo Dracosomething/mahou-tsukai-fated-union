@@ -156,12 +156,10 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
         if (entity instanceof Player player){
             int radius = 15;
             final int manacost = 30000;
-            if (!player.level().isClientSide){
-                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
-                    if (world instanceof Level _level && !_level.isClientSide()) {
-                        GaeMorganPain gaemorganpain = new GaeMorganPain(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
-                        gaemorganpain.morganA(_level, player, entity);
-                    }
+            if (!player.level().isClientSide && PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
+                if (world instanceof Level _level && !_level.isClientSide()) {
+                    GaeMorganPain gaemorganpain = new GaeMorganPain(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
+                    gaemorganpain.morganA(_level, player, entity);
                 }
             }
             if (world instanceof Level _level && _level.isClientSide()) {
