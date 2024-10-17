@@ -63,7 +63,7 @@ public class PowerConsolidationExtention {
             Entity failed = null;
 
             try {
-                final int manaCost = MTConfig.POWER_CONSOLIDATION_SWORD_MANA_COST;
+                final int manaCost = 10000;
                 double nerfFactor = MTConfig.POWER_CONSOLIDATION_NERF_FACTOR;
                 Iterator<Entity> iter = ((ServerLevel)event.level).getEntities().getAll().iterator();
                 final List<ItemEntity> toDelete = new ArrayList();
@@ -180,7 +180,7 @@ public class PowerConsolidationExtention {
             Entity failed = null;
 
             try {
-                final int manaCost = MTConfig.POWER_CONSOLIDATION_SWORD_MANA_COST;
+                final int manaCost = 10000;
                 double nerfFactor = MTConfig.POWER_CONSOLIDATION_NERF_FACTOR;
                 Iterator<Entity> iter = ((ServerLevel)event.level).getEntities().getAll().iterator();
                 final List<ItemEntity> toDelete = new ArrayList();

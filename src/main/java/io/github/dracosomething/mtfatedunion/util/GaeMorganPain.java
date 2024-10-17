@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -105,7 +106,7 @@ public class GaeMorganPain {
             double y = entity.getY();
             double z = entity.getZ();
             double cmp = (double)(this.radius * this.radius) - ((double)this.posX - x) * ((double)this.posX - x) - ((double)this.posY - y) * ((double)this.posY - y) - ((double)this.posZ - z) * ((double)this.posZ - z);
-            if (!(entity instanceof ThrowGaeBolg)) {
+            if (!(entity instanceof ThrowGaeBolg) && !(entity instanceof ItemEntity)) {
                 if (entity instanceof LivingEntity) {
                     float Health = ((LivingEntity) entity).getHealth();
                     float half = Health / 2F;
@@ -115,8 +116,13 @@ public class GaeMorganPain {
                     if (Health > 40){
                         ((LivingEntity) entity).setHealth(half);
                     }
-                    else {
+                    else if(Health < 40 && Health > 10) {
                         ((LivingEntity) entity).setHealth(damage);
+                    }
+                    else if (Health <= 10){
+                        for(int i = 0; i <21; i++) {
+                            ((LivingEntity) entity).hurt(entity.damageSources().genericKill(), 1000000000);
+                        }
                     }
                 }
                 caster.hurt(player.damageSources(). magic(), 10);

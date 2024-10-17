@@ -166,6 +166,7 @@ public class ThrowGaeBolg extends AbstractArrow {
             final int manacost = 5000;
             if (!player.level().isClientSide){
                 if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
+                    player.getCooldowns().addCooldown(GAE_BOLG.getItem(), 400);
                     if (world instanceof Level _level && !_level.isClientSide()) {
                         Explosion explosion = new Explosion(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
                         explosion.explosionA(_level, player);

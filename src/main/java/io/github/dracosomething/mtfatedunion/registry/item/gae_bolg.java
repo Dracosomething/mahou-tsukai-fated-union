@@ -1,9 +1,12 @@
 package io.github.dracosomething.mtfatedunion.registry.item;
 
+import com.doodle.spearsmod.SpearsMod;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import io.github.dracosomething.mtfatedunion.client.renderer.item.GaeBolgRenderer;
+import io.github.dracosomething.mtfatedunion.client.renderer.entity.GaeBolgThrownEntityRenderer;
+import io.github.dracosomething.mtfatedunion.mtfatedunion;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,12 +27,15 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
 import stepsword.mahoutsukai.config.MTConfig;
 import stepsword.mahoutsukai.item.MagicalItemRender;
 import stepsword.mahoutsukai.render.item.CaliburnRenderer;
 import stepsword.mahoutsukai.util.PlayerHelp;
 import stepsword.mahoutsukai.util.Utils;
+
+import java.util.function.Consumer;
 
 public class gae_bolg extends SwordItem implements Vanishable {
     EntityType<? extends ThrowGaeBolg> type;
@@ -104,7 +110,11 @@ public class gae_bolg extends SwordItem implements Vanishable {
         return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
     }
 
-    public Object getRenderPropertiesInternal() {
-        return new MagicalItemRender(GaeBolgRenderer::new);
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return mtfatedunion.getItemsRenderer();
+            }
+        });
     }
 }

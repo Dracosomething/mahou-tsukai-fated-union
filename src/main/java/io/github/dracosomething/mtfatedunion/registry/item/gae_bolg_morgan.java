@@ -2,10 +2,10 @@ package io.github.dracosomething.mtfatedunion.registry.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import io.github.dracosomething.mtfatedunion.client.renderer.item.GaeBolgRenderer;
-import io.github.dracosomething.mtfatedunion.client.renderer.item.GaeMorganRenderer;
+import io.github.dracosomething.mtfatedunion.mtfatedunion;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
 import io.github.dracosomething.mtfatedunion.registry.entity.morgan.ThrowGaeBolgMorgan;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -24,7 +24,10 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import stepsword.mahoutsukai.item.MagicalItemRender;
+
+import java.util.function.Consumer;
 
 public class gae_bolg_morgan extends SwordItem implements Vanishable {
     EntityType<? extends ThrowGaeBolgMorgan> type;
@@ -94,7 +97,11 @@ public class gae_bolg_morgan extends SwordItem implements Vanishable {
         return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
     }
 
-    public Object getRenderPropertiesInternal() {
-        return new MagicalItemRender(GaeMorganRenderer::new);
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return mtfatedunion.getItemsRenderer();
+            }
+        });
     }
 }

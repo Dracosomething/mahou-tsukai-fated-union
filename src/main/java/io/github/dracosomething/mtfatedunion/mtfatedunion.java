@@ -1,10 +1,12 @@
 package io.github.dracosomething.mtfatedunion;
 
+import com.doodle.client.ModItemRenderer;
 import com.mojang.logging.LogUtils;
 import io.github.dracosomething.mtfatedunion.effects.PowerConsolidationExtention;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
 import io.github.dracosomething.mtfatedunion.registry.creativetabs.MahouAddonTab;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.food.FoodProperties;
@@ -47,6 +49,7 @@ public class mtfatedunion
     public static final String MODID = "mtfatedunion";
     private static final Logger LOGGER = LogUtils.getLogger();
     public static long tickCounter = 0L;
+    private static BlockEntityWithoutLevelRenderer ITEMS_RENDERER;
 
     public mtfatedunion(FMLJavaModLoadingContext context)
     {
@@ -85,6 +88,14 @@ public class mtfatedunion
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
+    }
+
+    public static BlockEntityWithoutLevelRenderer getItemsRenderer() {
+        if (ITEMS_RENDERER == null) {
+            ITEMS_RENDERER = new ModItemRenderer();
+        }
+
+        return ITEMS_RENDERER;
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
