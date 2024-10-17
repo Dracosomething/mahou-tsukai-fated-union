@@ -1,6 +1,7 @@
 package io.github.dracosomething.mtfatedunion;
 
 import com.mojang.logging.LogUtils;
+import io.github.dracosomething.mtfatedunion.effects.PowerConsolidationExtention;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
 import io.github.dracosomething.mtfatedunion.registry.creativetabs.MahouAddonTab;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -48,12 +50,15 @@ public class mtfatedunion
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
+        modEventBus.addListener(PowerConsolidationExtention::PCWorldTick);
+
         ENTITY_TYPES.register(modEventBus);
         ITEMS.register(modEventBus);
         TABS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(PowerConsolidationExtention.class);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -98,6 +103,11 @@ public class mtfatedunion
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        }
+
+        @SubscribeEvent
+        public void tick(TickEvent.LevelTickEvent event) {
+            LOGGER.info("hriuhio");
         }
     }
 }

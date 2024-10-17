@@ -26,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
 import stepsword.mahoutsukai.util.Utils;
+import stepsword.mahoutsukai.entity.GateWeaponProjectileEntity;
 
 import javax.annotation.Nullable;
 
@@ -235,5 +236,4 @@ public class ThrowGaeBolg extends AbstractArrow {
     static {
         ID_FOIL = SynchedEntityData.defineId(ThrowGaeBolg.class, EntityDataSerializers.BOOLEAN);
     }
-
 }

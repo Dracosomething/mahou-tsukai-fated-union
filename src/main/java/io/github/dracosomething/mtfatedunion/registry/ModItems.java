@@ -1,9 +1,7 @@
 package io.github.dracosomething.mtfatedunion.registry;
 
-import io.github.dracosomething.mtfatedunion.registry.item.curruid_bone;
-import io.github.dracosomething.mtfatedunion.registry.item.gae_bolg;
 import io.github.dracosomething.mtfatedunion.mtfatedunion;
-import io.github.dracosomething.mtfatedunion.registry.item.gae_bolg_morgan;
+import io.github.dracosomething.mtfatedunion.registry.item.*;
 import io.github.dracosomething.mtfatedunion.registry.tag.mtfatedunionTiers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +16,7 @@ public class ModItems {
     public static final RegistryObject<Item> GAE_BOLG_MORGAN;
     public static final RegistryObject<Item> CURRUID_BONE;
     public static final RegistryObject<Item> CURRUID_ALTER_BONE;
+    public static final RegistryObject<Item> CURRUID_PROTOTYPE_BONE;
 
     public ModItems(){
 
@@ -49,6 +48,7 @@ public class ModItems {
             );
         });
         CURRUID_BONE = ITEMS.register("curruid_bone", curruid_bone::new);
-        CURRUID_ALTER_BONE = ITEMS.register("curruid_alter_bone", curruid_bone::new);
+        CURRUID_ALTER_BONE = ITEMS.register("curruid_alter_bone", curruid_alter_bone::new);
+        CURRUID_PROTOTYPE_BONE = ITEMS.register("curruid_prototype_bone", curruid_prototype_bone::new);
     }
 }

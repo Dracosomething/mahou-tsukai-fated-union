@@ -18,7 +18,6 @@ import stepsword.mahoutsukai.util.Utils;
 
 public class GaeBolgRenderer extends BlockEntityWithoutLevelRenderer {
     public static final ResourceLocation gae_bolg = new ResourceLocation("mtfatedunion", "item/gae_bolg");
-    public static final ResourceLocation gae_bolgTex = new ResourceLocation("mtfatedunion", "item/gae_bolg");
 
     public GaeBolgRenderer(BlockEntityRenderDispatcher p_172550_, EntityModelSet p_172551_) {
         super(p_172550_, p_172551_);

@@ -8,16 +8,19 @@
       "item": "minecraft:dragon_egg"
     },
     {
-      "item": "minecraft:bone"
+      "item": "mtfatedunion:curruid_bone"
     },
     {
       "item": "minecraft:dragon_breath"
+    },
+    {
+      "item": "minecraft:dragon_head"
     },
     {
       "item": "minecraft:cod"
     }
   ],
   "result": {
-    "item": "mtfatedunion:curruid_bone"
+    "item": "mtfatedunion:curruid_prototype_bone"
   }
 }
