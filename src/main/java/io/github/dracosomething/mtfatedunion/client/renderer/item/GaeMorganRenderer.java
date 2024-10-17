@@ -16,17 +16,17 @@ import stepsword.mahoutsukai.render.RenderBaseItem;
 import stepsword.mahoutsukai.render.RenderUtils;
 import stepsword.mahoutsukai.util.Utils;
 
-public class GaeBolgRenderer extends BlockEntityWithoutLevelRenderer {
-    public static final ResourceLocation gae_bolg = new ResourceLocation("mtfatedunion", "item/gae_bolg");
+public class GaeMorganRenderer extends BlockEntityWithoutLevelRenderer {
+    public static final ResourceLocation gae_bolg_morgan = new ResourceLocation("mtfatedunion", "item/gae_bolg_morgan");
 
-    public GaeBolgRenderer(BlockEntityRenderDispatcher p_172550_, EntityModelSet p_172551_) {
+    public GaeMorganRenderer(BlockEntityRenderDispatcher p_172550_, EntityModelSet p_172551_) {
         super(p_172550_, p_172551_);
     }
 
     public void renderByItem(ItemStack itemStackIn, ItemDisplayContext transform, PoseStack matrix, MultiBufferSource buffer, int var1, int var2) {
         if (itemStackIn != null && itemStackIn.getItem() instanceof gae_bolg) {
             matrix.pushPose();
-            RenderBaseItem.render(itemStackIn, matrix, buffer, 240, var2, gae_bolg, true);
+            RenderBaseItem.render(itemStackIn, matrix, buffer, 240, var2, gae_bolg_morgan, true);
             float offsetx = 0.0F;
             float offsety = 0.0F;
             float offsetz = 0.5F;

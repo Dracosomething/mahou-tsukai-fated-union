@@ -152,7 +152,6 @@ public class Explosion {
                     if (cmp > 0.0F && cmp < 6.1F && world instanceof ClientLevel) {
                         world.addParticle(ParticleTypes.SONIC_BOOM, true, (double) x, (double) y, (double) z, 5.0, 5.0, 5.0);
                         world.addParticle(ParticleTypes.EXPLOSION_EMITTER, true, (double) x, (double) y, (double) z, 5.0, 2.0, 2.0);
-                        world.addParticle(ParticleTypes.SMOKE, true, (double) x, (double) y, (double) z, 5.0, 5.0, 5.0);
                     }
                 }
             }

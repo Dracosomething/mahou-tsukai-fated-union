@@ -19,6 +19,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +31,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+import stepsword.mahoutsukai.block.FogProjector;
+import stepsword.mahoutsukai.effects.projection.PowerConsolidationSpellEffect;
+import stepsword.mahoutsukai.fluids.MurkyWaterBlock;
 
 import static io.github.dracosomething.mtfatedunion.registry.ModEntities.*;
 import static io.github.dracosomething.mtfatedunion.registry.ModItems.GAE_BOLG;
@@ -42,6 +46,7 @@ public class mtfatedunion
     // Define mod id in a common place for everything to reference
     public static final String MODID = "mtfatedunion";
     private static final Logger LOGGER = LogUtils.getLogger();
+    public static long tickCounter = 0L;
 
     public mtfatedunion(FMLJavaModLoadingContext context)
     {
@@ -50,15 +55,12 @@ public class mtfatedunion
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        modEventBus.addListener(PowerConsolidationExtention::PCWorldTick);
-
         ENTITY_TYPES.register(modEventBus);
         ITEMS.register(modEventBus);
         TABS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(PowerConsolidationExtention.class);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -104,10 +106,18 @@ public class mtfatedunion
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
+    }
 
-        @SubscribeEvent
-        public void tick(TickEvent.LevelTickEvent event) {
-            LOGGER.info("hriuhio");
+    @SubscribeEvent(
+            priority = EventPriority.NORMAL,
+            receiveCanceled = true
+    )
+    public void worldTick(TickEvent.LevelTickEvent event) {
+        if (event.phase == TickEvent.Phase.START && !event.level.isClientSide) {
+            tickCounter = event.level.getGameTime() % 50000L;
         }
+
+        PowerConsolidationExtention.PCWorldTick(event);
+        PowerConsolidationExtention.PCWorldTick2(event);
     }
 }

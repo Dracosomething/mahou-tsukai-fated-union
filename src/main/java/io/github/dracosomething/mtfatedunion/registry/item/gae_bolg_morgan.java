@@ -2,6 +2,8 @@ package io.github.dracosomething.mtfatedunion.registry.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import io.github.dracosomething.mtfatedunion.client.renderer.item.GaeBolgRenderer;
+import io.github.dracosomething.mtfatedunion.client.renderer.item.GaeMorganRenderer;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
 import io.github.dracosomething.mtfatedunion.registry.entity.morgan.ThrowGaeBolgMorgan;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +24,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import stepsword.mahoutsukai.item.MagicalItemRender;
 
 public class gae_bolg_morgan extends SwordItem implements Vanishable {
     EntityType<? extends ThrowGaeBolgMorgan> type;
@@ -91,4 +94,7 @@ public class gae_bolg_morgan extends SwordItem implements Vanishable {
         return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
     }
 
+    public Object getRenderPropertiesInternal() {
+        return new MagicalItemRender(GaeMorganRenderer::new);
+    }
 }

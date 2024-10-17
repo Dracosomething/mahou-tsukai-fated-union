@@ -2,6 +2,7 @@ package io.github.dracosomething.mtfatedunion.registry.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import io.github.dracosomething.mtfatedunion.client.renderer.item.GaeBolgRenderer;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -25,6 +26,8 @@ import net.minecraft.world.level.Level;
 import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
 import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
 import stepsword.mahoutsukai.config.MTConfig;
+import stepsword.mahoutsukai.item.MagicalItemRender;
+import stepsword.mahoutsukai.render.item.CaliburnRenderer;
 import stepsword.mahoutsukai.util.PlayerHelp;
 import stepsword.mahoutsukai.util.Utils;
 
@@ -101,4 +104,7 @@ public class gae_bolg extends SwordItem implements Vanishable {
         return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
     }
 
+    public Object getRenderPropertiesInternal() {
+        return new MagicalItemRender(GaeBolgRenderer::new);
+    }
 }
