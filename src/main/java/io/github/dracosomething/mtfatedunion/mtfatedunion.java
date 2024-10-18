@@ -35,8 +35,10 @@ import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import stepsword.mahoutsukai.block.FogProjector;
 import stepsword.mahoutsukai.effects.projection.PowerConsolidationSpellEffect;
+import stepsword.mahoutsukai.entity.butterfly.ButterflyEntity;
 import stepsword.mahoutsukai.fluids.MurkyWaterBlock;
 
+import static io.github.dracosomething.mtfatedunion.registry.MobEffects.EFFECTS;
 import static io.github.dracosomething.mtfatedunion.registry.ModEntities.*;
 import static io.github.dracosomething.mtfatedunion.registry.ModItems.GAE_BOLG;
 import static io.github.dracosomething.mtfatedunion.registry.ModItems.ITEMS;
@@ -61,6 +63,7 @@ public class mtfatedunion
         ENTITY_TYPES.register(modEventBus);
         ITEMS.register(modEventBus);
         TABS.register(modEventBus);
+        EFFECTS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

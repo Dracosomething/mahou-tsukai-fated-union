@@ -1,6 +1,8 @@
 package io.github.dracosomething.mtfatedunion.registry.entity;
 
+import io.github.dracosomething.mtfatedunion.registry.MobEffects;
 import io.github.dracosomething.mtfatedunion.registry.ModItems;
+import io.github.dracosomething.mtfatedunion.registry.effects.gaebolgcooldown;
 import io.github.dracosomething.mtfatedunion.util.Explosion;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -25,11 +27,15 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
+import stepsword.mahoutsukai.config.MTConfig;
+import stepsword.mahoutsukai.potion.ModEffects;
+import stepsword.mahoutsukai.util.EffectUtil;
 import stepsword.mahoutsukai.util.Utils;
 import stepsword.mahoutsukai.entity.GateWeaponProjectileEntity;
 
 import javax.annotation.Nullable;
 
+import static io.github.dracosomething.mtfatedunion.registry.MobEffects.BOLG_COOLDOWN;
 import static io.github.dracosomething.mtfatedunion.util.Explosion.ExplosionDamage;
 
 
@@ -166,10 +172,12 @@ public class ThrowGaeBolg extends AbstractArrow {
             final int manacost = 5000;
             if (!player.level().isClientSide){
                 if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
-                    player.getCooldowns().addCooldown(GAE_BOLG.getItem(), 400);
-                    if (world instanceof Level _level && !_level.isClientSide()) {
-                        Explosion explosion = new Explosion(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
-                        explosion.explosionA(_level, player);
+                    if(!EffectUtil.hasBuff(player, BOLG_COOLDOWN)) {
+                        if (world instanceof Level _level && !_level.isClientSide()) {
+                            Explosion explosion = new Explosion(radius, (float) x, (float) y + (float) (radius / 2 + 2), (float) z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
+                            explosion.explosionA(_level, player);
+                            EffectUtil.buff(player, BOLG_COOLDOWN, false, 500);
+                        }
                     }
                 }
             }
