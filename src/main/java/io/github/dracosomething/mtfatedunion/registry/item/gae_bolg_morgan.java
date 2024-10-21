@@ -97,11 +97,11 @@ public class gae_bolg_morgan extends SwordItem implements Vanishable {
         return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
     }
 
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return mtfatedunion.getItemsRenderer();
-            }
-        });
-    }
+//    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+//        consumer.accept(new IClientItemExtensions() {
+//            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+//                return mtfatedunion.getItemsRenderer();
+//            }
+//        });
+//    }
 }

@@ -1,7 +1,7 @@
 package io.github.dracosomething.mtfatedunion;
 
-import com.doodle.client.ModItemRenderer;
 import com.mojang.logging.LogUtils;
+import io.github.dracosomething.mtfatedunion.client.ModEntityRenderer;
 import io.github.dracosomething.mtfatedunion.effects.PowerConsolidationExtention;
 import io.github.dracosomething.mtfatedunion.registry.ModEntities;
 import io.github.dracosomething.mtfatedunion.registry.creativetabs.MahouAddonTab;
@@ -93,13 +93,13 @@ public class mtfatedunion
     {
     }
 
-    public static BlockEntityWithoutLevelRenderer getItemsRenderer() {
-        if (ITEMS_RENDERER == null) {
-            ITEMS_RENDERER = new ModItemRenderer();
-        }
-
-        return ITEMS_RENDERER;
-    }
+//    public static BlockEntityWithoutLevelRenderer getItemsRenderer() {
+//        if (ITEMS_RENDERER == null) {
+//            ITEMS_RENDERER = new ModEntityRenderer();
+//        }
+//
+//        return ITEMS_RENDERER;
+//    }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent

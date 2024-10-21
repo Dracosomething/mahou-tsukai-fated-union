@@ -1,6 +1,5 @@
 package io.github.dracosomething.mtfatedunion.client;
 
-import init.ModEntityTypes;
 import io.github.dracosomething.mtfatedunion.client.model.ThrownGaeBolgModel;
 import io.github.dracosomething.mtfatedunion.client.model.ThrownGaeMorganModel;
 import io.github.dracosomething.mtfatedunion.client.renderer.entity.GaeBolgThrownEntityRenderer;
@@ -38,6 +37,6 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void onLayerDefinitionsRegister(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        ModEntityTypes.registerLayerDefinitions(event);
+        ModEntities.registerLayerDefinitions(event);
     }
 }

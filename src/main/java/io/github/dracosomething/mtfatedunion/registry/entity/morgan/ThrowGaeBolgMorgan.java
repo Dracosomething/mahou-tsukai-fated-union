@@ -134,11 +134,7 @@ public class ThrowGaeBolgMorgan extends AbstractArrow {
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(soundevent, 1.0F, 1.0F);
 
-        for (int i = 0; i < 21; i++) {
-            if (i == 20){
                 execute(this.level(), p_37573_.getEntity().getX(), p_37573_.getEntity().getY(), p_37573_.getEntity().getZ());
-            }
-        }
     }
 
     @Override

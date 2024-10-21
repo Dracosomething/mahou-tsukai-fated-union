@@ -1,6 +1,5 @@
 package io.github.dracosomething.mtfatedunion.registry.item;
 
-import com.doodle.spearsmod.SpearsMod;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import io.github.dracosomething.mtfatedunion.client.renderer.entity.GaeBolgThrownEntityRenderer;
@@ -110,11 +109,11 @@ public class gae_bolg extends SwordItem implements Vanishable {
         return p_43383_ == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(p_43383_);
     }
 
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return mtfatedunion.getItemsRenderer();
-            }
-        });
-    }
+//    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+//        consumer.accept(new IClientItemExtensions() {
+//            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+//                return mtfatedunion.getItemsRenderer();
+//            }
+//        });
+//    }
 }
