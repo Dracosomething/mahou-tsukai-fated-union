@@ -53,6 +53,8 @@ public class mtfatedunion
     public static long tickCounter = 0L;
     private static BlockEntityWithoutLevelRenderer ITEMS_RENDERER;
 
+    public mtfatedunion(){}
+
     public mtfatedunion(FMLJavaModLoadingContext context)
     {
         IEventBus modEventBus = context.getModEventBus();
