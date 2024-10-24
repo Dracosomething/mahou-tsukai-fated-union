@@ -137,6 +137,7 @@ dependencies {
     compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api"))
     // Use the full Curios API jar at runtime
     runtimeOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}"))
+//    implementation fg.deobf("curse.maven:spears-877560:4771959")
     implementation fg.deobf("curse.maven:jade-324717:5776962")
 }
 
