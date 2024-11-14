@@ -1,5 +1,6 @@
 package io.github.dracosomething.mtfatedunion.registry;
 
+import io.github.dracosomething.mtfatedunion.Config;
 import io.github.dracosomething.mtfatedunion.mtfatedunion;
 import io.github.dracosomething.mtfatedunion.registry.item.*;
 import io.github.dracosomething.mtfatedunion.registry.tag.mtfatedunionTiers;
@@ -36,7 +37,7 @@ public class ModItems {
         ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, mtfatedunion.MODID);
         GAE_BOLG = ITEMS.register("gae_bolg", () ->{return new gae_bolg(mtfatedunionTiers.GAE_BOLG, 15, 2f, (new Item.Properties())
                 .stacksTo(1)
-                .durability(5000)
+                .durability(Config.GaeBolgDurability)
                 .fireResistant()
         );
         });

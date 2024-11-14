@@ -1,5 +1,6 @@
 package io.github.dracosomething.mtfatedunion.registry.entity;
 
+import io.github.dracosomething.mtfatedunion.Config;
 import io.github.dracosomething.mtfatedunion.registry.MobEffects;
 import io.github.dracosomething.mtfatedunion.registry.ModItems;
 import io.github.dracosomething.mtfatedunion.registry.effects.gaebolgcooldown;
@@ -21,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net. minecraft. world. level. Level;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -44,6 +45,7 @@ public class ThrowGaeBolg extends AbstractArrow {
     private ItemStack GAE_BOLG;
     private boolean dealtDamage;
     public int Gae_bolgreturn;
+    int check = 0;
 
     @Override
     public boolean ignoreExplosion() {
@@ -79,12 +81,12 @@ public class ThrowGaeBolg extends AbstractArrow {
             } else {
                 this.setNoPhysics(true);
                 Vec3 vec3 = entity.getEyePosition().subtract(this.position());
-                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)i, this.getZ());
+                this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double) i, this.getZ());
                 if (this.level().isClientSide) {
                     this.yOld = this.getY();
                 }
 
-                double d0 = 0.05 * (double)i;
+                double d0 = 0.05 * (double) i;
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.95).add(vec3.normalize().scale(d0)));
                 if (this.Gae_bolgreturn == 0) {
                     this.playSound(SoundEvents.TRIDENT_RETURN, 10.0F, 1.0F);
@@ -107,7 +109,7 @@ public class ThrowGaeBolg extends AbstractArrow {
     }
 
     public boolean isFoil() {
-        return (Boolean)this.entityData.get(ID_FOIL);
+        return (Boolean) this.entityData.get(ID_FOIL);
     }
 
     @Nullable
@@ -128,7 +130,7 @@ public class ThrowGaeBolg extends AbstractArrow {
         }
 
         Entity entity1 = this.getOwner();
-        DamageSource damagesource = this.damageSources().trident(this, (Entity)(entity1 == null ? this : entity1));
+        DamageSource damagesource = this.damageSources().trident(this, (Entity) (entity1 == null ? this : entity1));
         this.dealtDamage = true;
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         if (entity.hurt(damagesource, f)) {
@@ -137,10 +139,10 @@ public class ThrowGaeBolg extends AbstractArrow {
             }
 
             if (entity instanceof LivingEntity) {
-                LivingEntity livingentity1 = (LivingEntity)entity;
+                LivingEntity livingentity1 = (LivingEntity) entity;
                 if (entity1 instanceof LivingEntity) {
                     EnchantmentHelper.doPostHurtEffects(livingentity1, entity1);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity)entity1, livingentity1);
+                    EnchantmentHelper.doPostDamageEffects((LivingEntity) entity1, livingentity1);
                 }
 
                 this.doPostHurtEffects(livingentity1);
@@ -151,39 +153,50 @@ public class ThrowGaeBolg extends AbstractArrow {
         this.playSound(soundevent, 1.0F, 1.0F);
 
         for (int i = 0; i < 21; i++) {
-            if (i == 20){
-                execute(this.level(), p_37573_.getEntity().getX(), p_37573_.getEntity().getY(), p_37573_.getEntity().getZ());
+            if (i == 20) {
+                if (Config.GaeBolgEntity) {
+                    execute(this.level(), p_37573_.getEntity().getX(), p_37573_.getEntity().getY(), p_37573_.getEntity().getZ());
+                }
             }
         }
     }
 
     @Override
     public void onHitBlock(BlockHitResult blockHitResult) {
-        for (int i = 0; i <= 1; i++) {
-        super.onHitBlock(blockHitResult);
-            execute(this.level(), blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ());
+        for (int i = 0; i <= 21; i++) {
+            if (i == 20) {
+                if (Config.GaeBolgBlock) {
+                    super.onHitBlock(blockHitResult);
+                    execute(this.level(), blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ());
+                }
+            }
         }
     }
 
     public void execute(LevelAccessor world, double x, double y, double z) {
-        Entity entity = this.getOwner();
-        if (entity instanceof Player player){
-            int radius = 15;
-            final int manacost = 5000;
-            if (!player.level().isClientSide){
-                if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
-                    if(!EffectUtil.hasBuff(player, BOLG_COOLDOWN)) {
-                        if (world instanceof Level _level && !_level.isClientSide()) {
-                            Explosion explosion = new Explosion(radius, (float) x, (float) y + (float) (radius / 2 + 2), (float) z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
-                            explosion.explosionA(_level, player);
-                            EffectUtil.buff(player, BOLG_COOLDOWN, false, 500);
+        if (check == 0) {
+            check = 1;
+            Entity entity = this.getOwner();
+            if (entity instanceof Player player) {
+                int radius = Config.GaeBolgRadius;
+                final int manacost = Config.GaeBolgManaThrow;
+                if (!player.level().isClientSide) {
+                    if (PlayerManaManager.drainMana(player, manacost, false, false, true, true) == manacost) {
+                        if (!EffectUtil.hasBuff(player, BOLG_COOLDOWN)) {
+                            if (world instanceof Level _level && !_level.isClientSide()) {
+                                Explosion explosion = new Explosion(radius, (float) x, (float) y + (float) (radius / 2 + 2), (float) z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
+                                explosion.explosionA(_level, player);
+                                if (Config.GaeBolgCooldown) {
+                                    EffectUtil.buff(player, BOLG_COOLDOWN, false, 500);
+                                }
+                            }
                         }
                     }
                 }
-            }
-            if (world instanceof Level _level && _level.isClientSide()) {
-                Explosion explosion = new Explosion(radius, (float)x, (float)y + (float)(radius / 2 + 2), (float)z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
-                explosion.explosionB(_level, player);
+                if (world instanceof Level _level && _level.isClientSide() && Config.GaeBolgParticle) {
+                    Explosion explosion = new Explosion(radius, (float) x, (float) y + (float) (radius / 2 + 2), (float) z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
+                    explosion.explosionB(_level, player);
+                }
             }
         }
     }

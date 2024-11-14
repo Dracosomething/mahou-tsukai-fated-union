@@ -8,8 +8,8 @@ public class mtfatedunionTiers {
     public static final ForgeTier GAE_BOLG = new ForgeTier(
             7,
             5000,
-            1.1F,
-            3f,
+            0F,
+            0f,
             55,
             TagInit.NEEDS_GAE_BOLG,
             () -> Ingredient.EMPTY
