@@ -1,8 +1,7 @@
-package io.github.dracosomething.mtfatedunion.registry.effects;
+package io.github.dracosomething.mtfatedunion.registry.mobeffects;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
-import stepsword.mahoutsukai.config.MTConfig;
 import stepsword.mahoutsukai.potion.CooldownPotion;
 import stepsword.mahoutsukai.potion.NoShowMobEffectExtensions;
 

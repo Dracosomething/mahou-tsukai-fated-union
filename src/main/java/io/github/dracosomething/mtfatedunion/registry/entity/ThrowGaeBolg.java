@@ -1,9 +1,7 @@
 package io.github.dracosomething.mtfatedunion.registry.entity;
 
 import io.github.dracosomething.mtfatedunion.Config;
-import io.github.dracosomething.mtfatedunion.registry.MobEffects;
 import io.github.dracosomething.mtfatedunion.registry.ModItems;
-import io.github.dracosomething.mtfatedunion.registry.effects.gaebolgcooldown;
 import io.github.dracosomething.mtfatedunion.util.Explosion;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -28,11 +26,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import stepsword.mahoutsukai.capability.mahou.PlayerManaManager;
-import stepsword.mahoutsukai.config.MTConfig;
-import stepsword.mahoutsukai.potion.ModEffects;
 import stepsword.mahoutsukai.util.EffectUtil;
 import stepsword.mahoutsukai.util.Utils;
-import stepsword.mahoutsukai.entity.GateWeaponProjectileEntity;
 
 import javax.annotation.Nullable;
 
@@ -187,7 +182,7 @@ public class ThrowGaeBolg extends AbstractArrow {
                                 Explosion explosion = new Explosion(radius, (float) x, (float) y + (float) (radius / 2 + 2), (float) z, ExplosionDamage(false, Utils.getPlayerMahou(player)));
                                 explosion.explosionA(_level, player);
                                 if (Config.GaeBolgCooldown) {
-                                    EffectUtil.buff(player, BOLG_COOLDOWN, false, 500);
+                                    EffectUtil.buff(player, BOLG_COOLDOWN, false, Config.GaeBolgcooldown);
                                 }
                             }
                         }

@@ -1,5 +1,6 @@
 package io.github.dracosomething.mtfatedunion.util;
 
+import io.github.dracosomething.mtfatedunion.Config;
 import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -109,8 +110,8 @@ public class GaeMorganPain {
             if (!(entity instanceof ThrowGaeBolg) && !(entity instanceof ItemEntity)) {
                 if (entity instanceof LivingEntity) {
                     float Health = ((LivingEntity) entity).getHealth();
-                    float half = Health / 2F;
-                    float damage = Health - 10F;
+                    float half = Health - (Health * Config.DamageFactorMorgan);
+                    float damage = Health - Config.MorganDamage;
                     ((LivingEntity) entity).setLastHurtByPlayer(player);
                     ((LivingEntity) entity).hurtTime = 100;
                     if (Health > 40){

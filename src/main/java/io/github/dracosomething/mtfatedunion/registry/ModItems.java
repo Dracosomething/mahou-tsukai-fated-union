@@ -44,7 +44,7 @@ public class ModItems {
         GAE_BOLG_MORGAN = ITEMS.register("gae_bolg_morgan", () -> {
             return new gae_bolg_morgan(mtfatedunionTiers.GAE_BOLG, 15, 2f, (new Item.Properties())
                 .stacksTo(1)
-                .durability(5000)
+                .durability(Config.GaeMorganDurability)
                 .fireResistant()
             );
         });

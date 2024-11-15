@@ -1,5 +1,6 @@
 package io.github.dracosomething.mtfatedunion.util;
 
+import io.github.dracosomething.mtfatedunion.Config;
 import io.github.dracosomething.mtfatedunion.registry.entity.ThrowGaeBolg;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.level.ExplosionEvent;
 import stepsword.mahoutsukai.capability.mahou.IMahou;
@@ -77,7 +79,7 @@ public class Explosion {
                     }
                 }
 
-            FakeExplosion(affected, entity, entity, "bakuretsu", true, lst);
+            FakeExplosion(affected, entity, entity, "bakuretsu", Config.DropResources, lst);
         }
 
         Vec3 boom = new Vec3((double)this.posX, (double)this.posY, (double)this.posZ);
@@ -194,7 +196,7 @@ public class Explosion {
     public static float ExplosionDamage(boolean aoe, IMahou mahou) {
         float factor;
         boolean scales;
-            factor = (float)0.00025;
+            factor = (float) Config.DamageScaleFactor;
             scales = true;
 
         return scales && mahou != null ? (float)mahou.getMaxMana() * factor : factor;
