@@ -20,8 +20,8 @@ public class ModEntities {
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, mtfatedunion.MODID);
 
     public static void registerRenderers() {
-        EntityRenderers.register((EntityType)THROW_GEA_BOLG.get(), GaeBolgThrownEntityRenderer::new);
-        EntityRenderers.register((EntityType)THROW_GEA_MORGAN.get(), GaeMorganThrownEntityRenderer::new);
+        EntityRenderers.register(THROW_GEA_BOLG.get(), GaeBolgThrownEntityRenderer::new);
+        EntityRenderers.register(THROW_GEA_MORGAN.get(), GaeMorganThrownEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
