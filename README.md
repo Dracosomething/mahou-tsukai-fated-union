@@ -1,7 +1,7 @@
 # Mahou Tsukai: Fated Union
 read the FeatureList.md file for all features currently planed
 
-THIS MOD IS A ADDON FOR MAHOU TSUKAI!
+THIS MOD IS A ADDON FOR MAHOU TSUKAI!\
 YOU NEED FORGE 47.3.10 or above FOR IT TO WORK, IT DOES NOT WORK ON 47.3.0!
 
 The mod currently just adds 2 weapons both are spears
